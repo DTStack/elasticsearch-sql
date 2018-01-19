@@ -1,19 +1,23 @@
 package org.nlpcn.es4sql.parse;
 
-import java.util.*;
-
+import com.alibaba.druid.sql.ast.SQLCommentHint;
+import com.alibaba.druid.sql.ast.SQLExpr;
+import com.alibaba.druid.sql.ast.SQLOrderBy;
+import com.alibaba.druid.sql.ast.SQLOrderingSpecification;
 import com.alibaba.druid.sql.ast.expr.*;
 import com.alibaba.druid.sql.ast.statement.*;
-import com.alibaba.druid.sql.ast.*;
 import com.alibaba.druid.sql.dialect.mysql.ast.expr.MySqlSelectGroupByExpr;
 import com.alibaba.druid.sql.dialect.mysql.ast.statement.MySqlSelectQueryBlock;
-
-
 import org.nlpcn.es4sql.domain.*;
 import org.nlpcn.es4sql.domain.hints.Hint;
 import org.nlpcn.es4sql.domain.hints.HintFactory;
 import org.nlpcn.es4sql.exception.SqlParseException;
 import org.nlpcn.es4sql.query.multi.MultiQuerySelect;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -212,23 +216,20 @@ public class SqlParser {
      * @return list of From objects represents all the sources.
      */
     private List<From> findFrom(SQLTableSource from) {
-        boolean isSqlExprTable = from.getClass().isAssignableFrom(SQLExprTableSource.class);
+        ArrayList<From> fromList = new ArrayList<>();
 
-        if (isSqlExprTable) {
+        if (from.getClass().isAssignableFrom(SQLExprTableSource.class)) {
             SQLExprTableSource fromExpr = (SQLExprTableSource) from;
             String[] split = fromExpr.getExpr().toString().split(",");
 
-            ArrayList<From> fromList = new ArrayList<>();
             for (String source : split) {
                 fromList.add(new From(source.trim(), fromExpr.getAlias()));
             }
-            return fromList;
+        }else if(from.getClass().isAssignableFrom(SQLJoinTableSource.class)){
+            SQLJoinTableSource joinTableSource = ((SQLJoinTableSource) from);
+            fromList.addAll(findFrom(joinTableSource.getLeft()));
+            fromList.addAll(findFrom(joinTableSource.getRight()));
         }
-
-        SQLJoinTableSource joinTableSource = ((SQLJoinTableSource) from);
-        List<From> fromList = new ArrayList<>();
-        fromList.addAll(findFrom(joinTableSource.getLeft()));
-        fromList.addAll(findFrom(joinTableSource.getRight()));
         return fromList;
     }
 

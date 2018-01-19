@@ -1,11 +1,6 @@
 package org.nlpcn.es4sql;
 
-import static org.nlpcn.es4sql.TestsConstants.*;
-
-import java.io.FileInputStream;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-
+import com.google.common.io.ByteStreams;
 import org.elasticsearch.action.admin.cluster.node.info.NodesInfoResponse;
 import org.elasticsearch.action.bulk.BulkRequestBuilder;
 import org.elasticsearch.action.bulk.BulkResponse;
@@ -22,7 +17,11 @@ import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
-import com.google.common.io.ByteStreams;
+import java.io.FileInputStream;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
+import static org.nlpcn.es4sql.TestsConstants.*;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
@@ -383,7 +382,7 @@ public class MainTestSuite {
 		String port = System.getenv("ES_TEST_PORT");
 
 		if(host == null) {
-			host = "localhost";
+			host = "172.16.10.98";
 			System.out.println("ES_TEST_HOST enviroment variable does not exist. choose default 'localhost'");
 		}
 
