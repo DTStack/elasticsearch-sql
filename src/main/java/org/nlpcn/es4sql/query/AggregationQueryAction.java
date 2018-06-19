@@ -106,6 +106,9 @@ public class AggregationQueryAction extends QueryAction {
                 for (int i = 1; i < groupBy.size(); i++) {
                     field = groupBy.get(i);
                     AggregationBuilder subAgg = getGroupAgg(field, select);
+                    if(subAgg instanceof TermsAggregationBuilder && !(field instanceof MethodField) && select.getRowCount() > 0){
+                        ((TermsAggregationBuilder) subAgg).size(select.getRowCount());
+                    }
                       //ES5.0 termsaggregation with size = 0 not supported anymore
 //                    if (subAgg instanceof TermsAggregationBuilder && !(field instanceof MethodField)) {
 
