@@ -1,17 +1,14 @@
 package org.nlpcn.es4sql.query;
 
 
-import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.client.Client;
-
+import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.reindex.DeleteByQueryAction;
-import org.elasticsearch.action.bulk.byscroll.DeleteByQueryRequest;
 import org.elasticsearch.index.reindex.DeleteByQueryRequestBuilder;
 import org.nlpcn.es4sql.domain.Delete;
 import org.nlpcn.es4sql.domain.Where;
 import org.nlpcn.es4sql.exception.SqlParseException;
-
 import org.nlpcn.es4sql.query.maker.QueryMaker;
 
 public class DeleteQueryAction extends QueryAction {
@@ -40,12 +37,12 @@ public class DeleteQueryAction extends QueryAction {
 	 */
 	private void setIndicesAndTypes() {
 
-        DeleteByQueryRequest innerRequest = request.request();
+       /* DeleteByQueryRequest innerRequest = request.request();
         innerRequest.indices(query.getIndexArr());
         String[] typeArr = query.getTypeArr();
         if (typeArr!=null){
             innerRequest.getSearchRequest().types(typeArr);
-        }
+        }*/
 //		String[] typeArr = query.getTypeArr();
 //		if (typeArr != null) {
 //            request.set(typeArr);
