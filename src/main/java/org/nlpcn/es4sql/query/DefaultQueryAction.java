@@ -1,15 +1,11 @@
 package org.nlpcn.es4sql.query;
 
-import java.util.List;
-import java.util.ArrayList;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.script.Script;
-import org.elasticsearch.script.ScriptService;
 import org.elasticsearch.script.ScriptType;
 import org.elasticsearch.search.sort.FieldSortBuilder;
 import org.elasticsearch.search.sort.SortOrder;
@@ -18,6 +14,9 @@ import org.nlpcn.es4sql.domain.hints.Hint;
 import org.nlpcn.es4sql.domain.hints.HintType;
 import org.nlpcn.es4sql.exception.SqlParseException;
 import org.nlpcn.es4sql.query.maker.QueryMaker;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Transform SQL query to standard Elasticsearch search query
@@ -105,6 +104,7 @@ public class DefaultQueryAction extends QueryAction {
 					MethodField method = (MethodField) field;
 					if (method.getName().toLowerCase().equals("script")) {
 						handleScriptField(method);
+						includeFields.add(method.getAlias());
 					} else if (method.getName().equalsIgnoreCase("include")) {
 						for (KVValue kvValue : method.getParams()) {
 							includeFields.add(kvValue.value.toString()) ;

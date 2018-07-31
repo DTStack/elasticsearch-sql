@@ -27,7 +27,7 @@ public class ElasticSearchConnection implements Connection {
     public ElasticSearchConnection(String jdbcUrl) {
 
 
-        Settings settings = Settings.builder().put("client.transport.ignore_cluster_name", true).build();
+        Settings settings = Settings.builder().put("client.transport.ignore_cluster_name", true).put("client.transport.sniff",true).build();
         try {
             TransportClient transportClient = new PreBuiltTransportClient(settings);
 

@@ -1,16 +1,10 @@
 package org.nlpcn.es4sql.query;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 import com.google.common.collect.Lists;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.index.query.QueryBuilder;
-import org.elasticsearch.join.aggregations.JoinAggregationBuilders;
-import org.elasticsearch.search.aggregations.AbstractAggregationBuilder;
 import org.elasticsearch.search.aggregations.AggregationBuilder;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.bucket.nested.NestedAggregationBuilder;
@@ -18,17 +12,16 @@ import org.elasticsearch.search.aggregations.bucket.nested.ReverseNestedAggregat
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.aggregations.bucket.terms.TermsAggregationBuilder;
 import org.elasticsearch.search.sort.SortOrder;
-import org.nlpcn.es4sql.domain.Field;
-import org.nlpcn.es4sql.domain.KVValue;
-import org.nlpcn.es4sql.domain.MethodField;
-import org.nlpcn.es4sql.domain.Order;
-import org.nlpcn.es4sql.domain.Select;
-import org.nlpcn.es4sql.domain.Where;
+import org.nlpcn.es4sql.domain.*;
 import org.nlpcn.es4sql.domain.hints.Hint;
 import org.nlpcn.es4sql.domain.hints.HintType;
 import org.nlpcn.es4sql.exception.SqlParseException;
 import org.nlpcn.es4sql.query.maker.AggMaker;
 import org.nlpcn.es4sql.query.maker.QueryMaker;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Transform SQL query to Elasticsearch aggregations query
@@ -235,11 +228,11 @@ public class AggregationQueryAction extends QueryAction {
     }
 
     private AggregationBuilder createChildrenAggregation(Field field) {
-        AggregationBuilder childrenBuilder;
+        AggregationBuilder childrenBuilder = null;
 
         String childType = field.getChildType();
 
-        childrenBuilder = JoinAggregationBuilders.children(getChildrenAggName(field),childType);
+        //childrenBuilder = JoinAggregationBuilders.children(getChildrenAggName(field),childType);
 
         return childrenBuilder;
     }

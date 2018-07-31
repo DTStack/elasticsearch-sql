@@ -1,17 +1,11 @@
 package org.nlpcn.es4sql.query.maker;
 
-import java.math.BigDecimal;
-import java.util.*;
-
-import org.elasticsearch.join.aggregations.JoinAggregationBuilders;
 import org.elasticsearch.script.Script;
-import org.elasticsearch.script.ScriptService;
 import org.elasticsearch.script.ScriptType;
 import org.elasticsearch.search.aggregations.AbstractAggregationBuilder;
 import org.elasticsearch.search.aggregations.AggregationBuilder;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.bucket.geogrid.GeoGridAggregationBuilder;
-
 import org.elasticsearch.search.aggregations.bucket.histogram.DateHistogramAggregationBuilder;
 import org.elasticsearch.search.aggregations.bucket.histogram.DateHistogramInterval;
 import org.elasticsearch.search.aggregations.bucket.histogram.Histogram;
@@ -36,6 +30,9 @@ import org.nlpcn.es4sql.domain.Where;
 import org.nlpcn.es4sql.exception.SqlParseException;
 import org.nlpcn.es4sql.parse.ChildrenType;
 import org.nlpcn.es4sql.parse.NestedType;
+
+import java.math.BigDecimal;
+import java.util.*;
 
 public class AggMaker {
 
@@ -191,11 +188,11 @@ public class AggMaker {
 
             builder.field(childrenType.field);
 
-            AggregationBuilder childrenBuilder;
+            AggregationBuilder childrenBuilder = null;
 
             String childrenAggName = childrenType.field + "@CHILDREN";
 
-            childrenBuilder = JoinAggregationBuilders.children(childrenAggName,childrenType.childType);
+            //childrenBuilder = JoinAggregationBuilders.children(childrenAggName,childrenType.childType);
 
             return childrenBuilder;
         }
