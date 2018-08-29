@@ -5,7 +5,8 @@ import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
 import org.elasticsearch.transport.client.PreBuiltTransportClient;
-
+import com.alibaba.druid.support.logging.Log;
+import com.alibaba.druid.support.logging.LogFactory;
 import java.io.InputStream;
 import java.io.Reader;
 import java.math.BigDecimal;
@@ -21,6 +22,8 @@ import java.util.concurrent.Executor;
  * Created by allwefantasy on 8/30/16.
  */
 public class ElasticSearchConnection implements Connection {
+
+    private final static Log LOG = LogFactory.getLog(ElasticSearchConnection.class);
 
     private Client client;
 
@@ -585,7 +588,15 @@ public class ElasticSearchConnection implements Connection {
 
     @Override
     public void close() throws SQLException {
+        if(this.client == null){
+            return;
+        }
 
+        try {
+            this.client.close();
+        } catch (Exception e) {
+            LOG.error("close TransportClient error", e);
+        }
     }
 
     @Override
