@@ -1,5 +1,7 @@
 package com.alibaba.druid.pool;
 
+import com.alibaba.druid.support.logging.Log;
+import com.alibaba.druid.support.logging.LogFactory;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.Settings;
@@ -21,6 +23,8 @@ import java.util.concurrent.Executor;
  * Created by allwefantasy on 8/30/16.
  */
 public class ElasticSearchConnection implements Connection {
+
+    private final static Log LOG = LogFactory.getLog(ElasticSearchConnection.class);
 
     private Client client;
 
@@ -587,6 +591,15 @@ public class ElasticSearchConnection implements Connection {
 
     @Override
     public void close() throws SQLException {
+        if(this.client == null){
+            return;
+        }
+
+        try {
+            this.client.close();
+        } catch (Exception e) {
+            LOG.error("close TransportClient error", e);
+        }
 
     }
 
